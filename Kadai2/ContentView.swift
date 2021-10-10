@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var ans: String = "Label"
+    @State private var ansewrText: String = "Label"
     @State private var selectedOpt = OptType.add
     @State var textNum1: String = ""
     @State var textNum2: String = ""
@@ -40,12 +40,12 @@ struct ContentView: View {
 
                 Button(action: {
                     UIApplication.shared.closeKeyboard()
-                    self.ans = calcAns(type: selectedOpt, Double(self.textNum1), Double(self.textNum2))
+                    self.ansewrText = calcAns(type: selectedOpt, Double(self.textNum1), Double(self.textNum2))
                 }, label: {
                     Text("Button")
                 })
 
-                Text(self.ans)
+                Text(self.ansewrText)
             }.padding()
         }
     }
