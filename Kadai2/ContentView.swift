@@ -34,7 +34,7 @@ struct ContentView: View {
 
                 Picker("", selection: $selectedOpt) {
                     ForEach(OptType.allCases, id: \.self) { opt in
-                        Text(opt.rawValue).tag(OptType?.some(opt))
+                        Text(opt.rawValue).tag(opt)
                     }
                 }.pickerStyle(SegmentedPickerStyle())
 
@@ -59,26 +59,30 @@ enum OptType: String, CaseIterable {
 }
 
 func calcAns(type: OptType, _ num1: Double?, _ num2: Double?) -> String {
-    if num1 == nil || num2 == nil {
+    guard let num1 = num1 else {
         return "数字を入力してください"
-    } else {
-        var tmpCalc: Double
-        switch type {
-        case .add:
-            tmpCalc = num1! + num2!
-        case .sub:
-            tmpCalc = num1! - num2!
-        case .mul:
-            tmpCalc = num1! * num2!
-        case .div:
-            if num2 == 0 {
-                return "割る数には0以外を入力してください"
-            } else {
-                tmpCalc = num1! / num2!
-            }
-        }
-        return String(format: "%.1f", tmpCalc)
     }
+
+    guard let num2 = num2 else {
+        return "数字を入力してください"
+    }
+
+    let tmpCalc: Double
+    switch type {
+    case .add:
+        tmpCalc = num1 + num2
+    case .sub:
+        tmpCalc = num1 - num2
+    case .mul:
+        tmpCalc = num1 * num2
+    case .div:
+        guard num2 != 0 else {
+            return "割る数には0以外を入力してください"
+        }
+
+        tmpCalc = num1 / num2
+    }
+    return String(format: "%.1f", tmpCalc)
 }
 
 // 画面をタップするとキーボードを閉じる & 入力が確定する
